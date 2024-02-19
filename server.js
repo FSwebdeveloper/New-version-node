@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 
 
@@ -25,7 +26,9 @@ const User = mongoose.model("User", userSchema);
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
+
 
 // app.get("/", (req, res) =>{
 //     res.send("<h1>Wellcome to Backend</h1>");
