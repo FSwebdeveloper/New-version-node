@@ -57,7 +57,7 @@ User.create({
       password: req.body.password,
     }).then(user => res.json(user))
     .catch(err=> console.log(err))
-    res.json({errors:"Please enter a unique email"});
+    res.json({error:"Please enter a unique email"});
 });
 
 
