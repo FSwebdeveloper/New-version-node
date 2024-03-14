@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const { body, validationResult } = require('express-validator');
 
 
 
@@ -15,12 +16,19 @@ async function main() {
 
 
 const userSchema = new mongoose.Schema({
-    email: String,
-    password: String
+    email:{
+      type: String,
+      unique: true
+    },
+    password:{
+      type: String,
+    }
   });
 
 
 const User = mongoose.model("User", userSchema);
+User.createIndexes();
+
 
 
 
@@ -34,15 +42,22 @@ app.use(bodyParser.json());
 //     res.send("<h1>Wellcome to Backend</h1>");
 // })
 
-app.post("/login", async (req,res)=>{
+app.post("/login",[
+  body('email').isEmail(),
+  body('password').isLength({ min: 5 }),
+], (req,res)=>{
 
-const user = new User();
-user.email = req.body.email;
-user.password = req.body.password;
-const data = await user.save();
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-console.log(data);
-res.json(data);
+User.create({
+      email: req.body.email,
+      password: req.body.password,
+    }).then(user => res.json(user))
+    .catch(err=> console.log(err))
+    res.json({errors:"Please enter a unique email"});
 });
 
 
