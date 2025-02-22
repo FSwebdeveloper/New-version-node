@@ -28,9 +28,9 @@ const app = express();
 
 app.use(bodyParser.json());
 
-// app.get("/", (req, res) =>{
-//     res.send("<h1>Wellcome to Backend</h1>");
-// })
+app.get("/", (req, res) =>{
+    res.send("<h1>Wellcome to Backend</h1>");
+})
 
 app.post("/login", async(req,res)=>{
 
