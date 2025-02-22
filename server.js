@@ -47,7 +47,7 @@ res.json(data);
 
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 8080;
+  port = 10000;
 }
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
