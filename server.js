@@ -46,8 +46,8 @@ res.json(data);
 
 
 let port = process.env.PORT;
-if (port == null || port == "https://netflix-clone-react-node.onrender.com") {
-  port = 8080;
+if (port == null || port == "") {
+  port = "https://netflix-clone-react-node.onrender.com";
 }
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
