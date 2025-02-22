@@ -1,8 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+// const cors = require("cors");
 const bodyParser = require("body-parser");
-const cors = require("cors");
-const { body, validationResult } = require('express-validator');
 
 
 
@@ -16,50 +15,33 @@ async function main() {
 
 
 const userSchema = new mongoose.Schema({
-    email:{
-      type: String,
-      unique: true
-    },
-    password:{
-      type: String,
-    }
+    email: String,
+    password: String
   });
 
 
 const User = mongoose.model("User", userSchema);
-User.createIndexes();
-
 
 
 
 const app = express();
 
-app.use(cors());
 app.use(bodyParser.json());
-
 
 // app.get("/", (req, res) =>{
 //     res.send("<h1>Wellcome to Backend</h1>");
 // })
 
-app.post("/login",[
-  body('email').isEmail(),
-  body('password').isLength({ min: 5 }),
-], (req,res)=>{
+app.post("/login", async(req,res)=>{
 
-  const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+const user = new User();
+user.email = req.body.email;
+user.password = req.body.password;
+const data = await user.save();
 
-User.create({
-      email: req.body.email,
-      password: req.body.password,
-    }).then(user => res.json(user))
-    .catch(err=> console.log(err))
-    res.json({error:"Please enter a unique email"});
+console.log(data);
+res.json(data);
 });
-
 
 
 
